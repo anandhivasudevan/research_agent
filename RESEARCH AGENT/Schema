@@ -1,0 +1,28 @@
+{
+    "messages": {
+        "items": {
+            "additionalProperties": false,
+            "properties": {
+                "content": {
+                    "title": "The contents of the message.",
+                    "type": "string"
+                },
+                "role": {
+                    "enum": [
+                        "user",
+                        "assistant"
+                    ],
+                    "title": "The role of the message author.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "role",
+                "content"
+            ],
+            "type": "object"
+        },
+        "title": "The messages for this chat session.",
+        "type": "array"
+    }
+}
