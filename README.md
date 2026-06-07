@@ -1,95 +1,168 @@
- Research Agent — AI-Powered Autonomous Research Assistant
-An intelligent research agent built with LangGraph ReAct architecture, powered by Meta LLaMA 3.2 on IBM Watsonx AI, and deployed on IBM Cloud. The agent autonomously searches the web, retrieves academic information, summarizes findings, and generates structured research reports — all through a conversational interface.
+# Research Agent
 
-Built as the capstone project for the AICTE Internship with IBM SkillsBuild × Edunet Foundation (July–August 2025).
+An intelligent, autonomous research assistant built with LangGraph ReAct architecture, powered by Meta LLaMA 3.2 on IBM Watsonx AI, and deployed on IBM Cloud. The agent searches the web, retrieves academic information, synthesizes findings from multiple sources, and generates structured research reports — all through a conversational interface with streaming support.
 
+Built as the capstone project for the AICTE Internship with IBM SkillsBuild x Edunet Foundation (July–August 2025).
 
-Features
+---
 
-ReAct Agent Architecture — uses LangGraph's create_react_agent for autonomous reasoning and tool use
-Multi-Source Search — integrates GoogleSearch, DuckDuckGo, Wikipedia, and WebCrawler tools
-Research Summarization — understands natural language research questions and retrieves relevant information
-Report Generation — drafts structured research summaries and suggests hypotheses
-Streaming Responses — real-time token-by-token streaming via generate_stream()
-Conversation Memory — multi-turn memory with LangGraph's MemorySaver
-IBM Cloud Deployment — deployed as a production service on IBM Watsonx AI (IBM Cloud US South)
+## Features
 
+- **ReAct Agent Architecture** — autonomous reasoning and tool selection via LangGraph's `create_react_agent`
+- **Multi-Source Search** — integrates GoogleSearch, DuckDuckGo, Wikipedia, and WebCrawler tools from the IBM Watsonx AI Toolkit
+- **Research Summarization** — understands natural language questions and retrieves structured, relevant information
+- **Report Generation** — drafts organized research summaries and suggests hypotheses
+- **Streaming Responses** — real-time token-by-token output via `generate_stream()`
+- **Conversation Memory** — multi-turn session memory using LangGraph's `MemorySaver`
+- **IBM Cloud Deployment** — runs as a production service on IBM Watsonx AI (US South)
 
-Tech Stack
-LayerTechnologyLLMMeta LLaMA 3.2 (11B Vision Instruct)Agent FrameworkLangGraph (ReAct)LLM IntegrationLangChain IBM / ChatWatsonxToolsIBM Watsonx AI Toolkit (GoogleSearch, DuckDuckGo, Wikipedia, WebCrawler)DeploymentIBM Watsonx AI — IBM Cloud (us-south)LanguagePython (Jupyter Notebook)
+---
 
-Architecture
+## Project Structure
+
+```
+research_agent/
+├── RESEARCH AGENT/
+│   └── Research_Agent.ipynb    # Main notebook — agent setup, tools, streaming, and demos
+└── README.md
+```
+
+---
+
+## Tech Stack
+
+| Layer             | Technology                                          |
+|-------------------|-----------------------------------------------------|
+| LLM               | Meta LLaMA 3.2 (11B Vision Instruct)                |
+| Agent Framework   | LangGraph (ReAct)                                   |
+| LLM Integration   | LangChain IBM / ChatWatsonx                         |
+| Tools             | IBM Watsonx AI Toolkit (GoogleSearch, DuckDuckGo, Wikipedia, WebCrawler) |
+| Deployment        | IBM Watsonx AI — IBM Cloud (us-south)               |
+| Language          | Python (Jupyter Notebook)                           |
+
+---
+
+## Architecture
+
+```
 User Query
-    │
-    ▼
+    |
+    v
 ReAct Agent (LangGraph)
-    │
-    ├──► GoogleSearch Tool
-    ├──► DuckDuckGo Tool
-    ├──► Wikipedia Tool
-    ├──► WebCrawler Tool
-    │
-    ▼
-LLaMA 3.2 (IBM Watsonx)
-    │
-    ▼
+    |
+    |---> GoogleSearch Tool
+    |---> DuckDuckGo Tool
+    |---> Wikipedia Tool
+    |---> WebCrawler Tool
+    |
+    v
+LLaMA 3.2 via IBM Watsonx AI
+    |
+    v
 Structured Research Response (streamed)
+```
+
 The agent follows the Reasoning + Acting (ReAct) loop:
 
-Receives a research question
-Reasons about which tool to use
-Acts by calling the appropriate search tool
-Observes the result
-Repeats until it has enough information
-Returns a comprehensive, formatted response
+1. Receives a research question
+2. Reasons about which tool is most appropriate
+3. Acts by calling the selected search or crawl tool
+4. Observes the result
+5. Repeats until sufficient information is gathered
+6. Returns a comprehensive, formatted response
 
+---
 
-🚀 Getting Started
-Prerequisites
-bashpip install langchain-ibm ibm-watsonx-ai langgraph langchain-core
-Configuration
+## Getting Started
 
-Clone the repo:
+### Prerequisites
 
-bashgit clone https://github.com/anandhivasudevan/research_agent.git
+- Python 3.8+
+- An IBM Cloud account with Watsonx AI access
+- A Watsonx AI Space ID and API Key
+
+### Installation
+
+```bash
+pip install langchain-ibm ibm-watsonx-ai langgraph langchain-core
+```
+
+### Configuration
+
+Clone the repository:
+
+```bash
+git clone https://github.com/anandhivasudevan/research_agent.git
 cd research_agent
+```
 
-Set up your IBM Watsonx credentials. Create a .env file based on .env.example:
+Set your IBM Watsonx credentials as environment variables or in a `.env` file:
 
+```env
 IBM_API_KEY=your_ibm_api_key_here
 IBM_SPACE_ID=your_watsonx_space_id_here
 IBM_SERVICE_URL=https://us-south.ml.cloud.ibm.com
+```
 
-Open RESEARCH AGENT/Research_Agent.ipynb in Jupyter and run the cells.
+Open the notebook and run the cells:
 
+```bash
+jupyter notebook "RESEARCH AGENT/Research_Agent.ipynb"
+```
 
-⚠️ Note: API credentials have been removed from the notebook for security. You will need your own IBM Watsonx API key and Space ID to run this project. Sign up for a free IBM Cloud account at cloud.ibm.com.
+> Note: API credentials have been removed from the notebook for security. You will need your own IBM Watsonx API key and Space ID. A free IBM Cloud account can be created at [cloud.ibm.com](https://cloud.ibm.com).
 
- 
-How It Works
-1. Agent Initialization
-The agent is initialized with a ChatWatsonx model connected to IBM Cloud, along with a set of search and web tools from the IBM Watsonx AI Toolkit.
-2. Tool Calling
-When the user asks a research question, the ReAct agent decides which tool to call — it may search Google, query DuckDuckGo, look up Wikipedia, or crawl a specific webpage depending on the query.
-3. Response Generation
-The agent synthesizes information from multiple sources and returns a well-structured response. It supports both standard (generate) and streaming (generate_stream) response modes for real-time output.
-4. Memory
-Conversation history is maintained using LangGraph's MemorySaver, allowing the agent to handle follow-up questions within the same session.
+---
 
-Key Implementation Details
+## How It Works
 
-Custom Tool Wrapper — create_utility_agent_tool() wraps IBM Watsonx Toolkit tools into LangChain StructuredTool objects with proper schema validation
-Streaming Architecture — generate_stream() handles three event types: messages (content chunks), updates > agent (tool calls), and updates > tools (tool results)
-Token Usage Tracking — final stream chunk includes prompt_tokens, completion_tokens, and total_tokens metadata
+### 1. Agent Initialization
 
+The agent is initialized with a `ChatWatsonx` model connected to IBM Cloud, together with a set of search and web tools from the IBM Watsonx AI Toolkit. Tools are wrapped using a custom `create_utility_agent_tool()` function that converts them into LangChain `StructuredTool` objects with proper schema validation.
 
-About This Project
+### 2. Tool Calling
+
+When a research question is submitted, the ReAct agent decides which tool to invoke — it may query Google, search DuckDuckGo, look up Wikipedia, or crawl a specific URL depending on the nature of the query. This decision is made autonomously at each reasoning step.
+
+### 3. Response Generation
+
+The agent synthesizes information gathered from multiple tool calls and returns a well-structured response. Both standard (`generate`) and streaming (`generate_stream`) response modes are supported.
+
+### 4. Streaming
+
+`generate_stream()` handles three event types during output:
+
+| Event Type              | Description                          |
+|-------------------------|--------------------------------------|
+| `messages`              | Content chunks streamed token by token |
+| `updates > agent`       | Tool call decisions made by the agent  |
+| `updates > tools`       | Results returned from tool calls       |
+
+The final stream chunk includes token usage metadata: `prompt_tokens`, `completion_tokens`, and `total_tokens`.
+
+### 5. Memory
+
+Conversation history is maintained using LangGraph's `MemorySaver`, enabling the agent to handle follow-up questions within the same session without losing context.
+
+---
+
+## Key Implementation Details
+
+- **Custom Tool Wrapper** — `create_utility_agent_tool()` bridges IBM Watsonx Toolkit tools to LangChain's `StructuredTool` interface, ensuring correct schema validation and argument handling.
+- **Streaming Architecture** — `generate_stream()` processes event stream chunks and routes them by type for real-time display of reasoning, tool calls, and final answers.
+- **Token Tracking** — usage metadata is extracted from the final stream chunk for cost and performance monitoring.
+
+---
+
+## About This Project
+
 This project was developed as the final capstone during a 4-week AICTE-approved AI/ML internship with Edunet Foundation in collaboration with IBM SkillsBuild (July–August 2025). It was built and deployed on IBM Cloud using IBM Watsonx AI services.
 
-Author
-Anandhi Vasudevan
-AI & ML Engineer | B.Tech AI & DS, CK College of Engineering and Technology
+---
 
 
-License
+## License
+
 This project is open source and available under the MIT License.
+
+---
